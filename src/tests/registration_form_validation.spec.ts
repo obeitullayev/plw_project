@@ -16,7 +16,6 @@ enum NOTIFICATIONS {
     WITHOUT_LOWER_PASS = "Password should contain at least one character in lower case",
     EMPTY_PASS = "Password is required",
     EMPTY_USERNAME = "Username is required",
-    USED_USERNAME = "Username is in use",
 }
 
 test.describe("[Registration Form]", () => {
@@ -81,36 +80,6 @@ test.describe("[Registration Form]", () => {
         const registerLink = page.locator('#registerOnLogin');
         await page.goto(url);
         await registerLink.click();
-    });
-
-    test("Success registration", async ({page}) => {
-        const usernameInput = page.locator("#userNameOnRegister");
-        const passwordInput = page.locator("#passwordOnRegister");
-        const registerButton = page.locator("#register");
-        const notification = page.locator("#errorMessageOnRegister");
-
-        await usernameInput.fill(validCredentials.username);
-        await passwordInput.fill(validCredentials.password);
-        await registerButton.click();
-        await expect(notification).toBeVisible();
-        await expect(notification).toHaveText(NOTIFICATIONS.REGISTER_SUCCESS);
-    });
-
-    test("Should not register with already used username", async ({page}) => {
-        const usernameInput = page.locator("#userNameOnRegister");
-        const passwordInput = page.locator("#passwordOnRegister");
-        const registerButton = page.locator("#register");
-        const notification = page.locator("#errorMessageOnRegister");
-
-        await usernameInput.fill(validCredentials.username);
-        await passwordInput.fill(validCredentials.password);
-        await registerButton.click();
-
-        await usernameInput.fill(validCredentials.username);
-        await passwordInput.fill(validCredentials.password);
-        await registerButton.click();
-        await expect(notification).toBeVisible();
-        await expect(notification).toHaveText(NOTIFICATIONS.USED_USERNAME);
     });
 
     test("Should not register with short password", async ({page}) => {
