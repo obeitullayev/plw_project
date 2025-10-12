@@ -1,20 +1,5 @@
 import test, {expect} from "@playwright/test";
 
-/*Разработать тест со следующими шагами:
-  - открыть https://the-internet.herokuapp.com/
-  - перейти на страницу Dynamic Controls
-  - Дождаться появления кнопки Remove
-  - Завалидировать текста в заголовке страницы
-  - Чекнуть чекбокс
-  - Кликнуть по кнопке Remove
-  - Дождаться исчезновения чекбокса
-  - Проверить наличие кнопки Add
-  - Завалидировать текст It's gone!
-  - Кликнуть на кнопку Add
-  - Дождаться появления чекбокса
-  - Завалидировать текст It's back!
-*/
-
 test.describe("[Dynamic Controls]", ()=> {
     test("Should open page Dynamic Controls and remove and back checkbox", async ({page}) => {
         const url = "https://the-internet.herokuapp.com/"
