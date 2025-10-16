@@ -20,14 +20,6 @@ test.describe("[Registration Form]", () => {
             if (title === 'LONG_USERNAME' || title === 'LONG_PASS' || title === 'WITHOUT_UPPER_PASS') {
                 test.skip();
             }
-            else if (title === "USED_USERNAME") {
-                await page.evaluate(({ username, password }) => {
-                    localStorage.setItem(username, JSON.stringify({
-                        name: username,
-                        password: password
-                    }));
-                }, { username, password });
-            }
 
             const usernameInput = page.locator("#userNameOnRegister");
             const passwordInput = page.locator("#passwordOnRegister");
