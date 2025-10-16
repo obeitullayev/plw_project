@@ -56,7 +56,8 @@ test.describe("Table", () =>{
         }
     }
 
-    let counter = 1; 
+    let counter = 1;
+
     for (const {Email, Due, ["First Name"]: firstName, ["Last Name"]: lastName, ['Web Site']: web} of userData) {
         test( `Data Check #${counter++}`, async ({page}) => {
             const url = "https://the-internet.herokuapp.com/tables"
