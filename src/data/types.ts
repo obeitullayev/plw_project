@@ -4,3 +4,11 @@ export interface IInvalidCredential {
   title: string;
   message: string;
 }
+
+export interface IUserData {
+            'Last Name': string,
+            'First Name': string,
+            Email: string,
+            Due: string,
+            'Web Site': string
+}
