@@ -1,5 +1,5 @@
 import test, {expect, Page} from "@playwright/test";
-import { IUserData } from 'data/types';
+import { IUserData } from 'data/types/types';
 import path from "path";
 import fs from "fs"
 
