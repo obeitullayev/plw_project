@@ -1,9 +1,9 @@
 import { MANUFACTURERS } from "data/salesPortal/products/manufacturers";
 
 export interface IProduct {
-  name: string;
-  manufacturer: MANUFACTURERS;
-  price: number;
-  amount: number;
-  notes?: string;
+  Name: string;
+  Manufacturer: MANUFACTURERS;
+  Price: number;
+  Amount: number;
+  Notes?: string;
 }

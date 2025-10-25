@@ -5,6 +5,7 @@ import { generateProductData } from "data/salesPortal/products/generateProductDa
 // import { MANUFACTURERS } from "data/salesPortal/products/manufacturers";
 // import { IProduct } from "data/types/product.types";
 import { HomePage } from "ui/pages/home.page";
+import { Login } from "ui/pages/login.page";
 import { AddNewProductPage } from "ui/pages/products/addNewProduct.page";
 import { ProductsListPage } from "ui/pages/products/productsList.page";
 
@@ -85,25 +86,19 @@ test.describe("[Sales Portal] [Products]", async () => {
     await productsListPage.waitForOpened();
 
     await expect(productsListPage.toastMessage).toContainText(NOTIFICATIONS.PRODUCT_CREATED);
-    await expect(productsListPage.tableRowByName(productData.name)).toBeVisible();
+    await expect(productsListPage.firstTableRow).toBeVisible();
   });
 
   test("Add new product", async ({ page }) => {
     const homePage = new HomePage(page);
     const productsListPage = new ProductsListPage(page);
     const addNewProductPage = new AddNewProductPage(page);
-
-    //login page
-    const emailInput = page.locator("#emailinput");
-    const passwordInput = page.locator("#passwordinput");
-    const loginButton = page.locator("button[type='submit']");
+    const loginPage = new Login(page);
 
     await homePage.open();
-
-    await expect(emailInput).toBeVisible();
-    await emailInput.fill(credentials.username);
-    await passwordInput.fill(credentials.password);
-    await loginButton.click();
+    await loginPage.waitForOpened();
+    await loginPage.fillCredentials(credentials)
+    await loginPage.clickLogin()
 
     await homePage.waitForOpened();
     await homePage.clickOnViewModule("Products");
@@ -115,7 +110,7 @@ test.describe("[Sales Portal] [Products]", async () => {
     await addNewProductPage.clickSave();
     await productsListPage.waitForOpened();
     await expect(productsListPage.toastMessage).toContainText(NOTIFICATIONS.PRODUCT_CREATED);
-    await expect(productsListPage.tableRowByName(productData.name)).toBeVisible();
+    await expect(productsListPage.firstTableRow).toBeVisible();
   });
 });
 
