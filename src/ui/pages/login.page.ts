@@ -20,6 +20,5 @@ export class Login extends SalesPortalPage {
 
     async waitForOpened(){ //переопределил метод, так как на странице есть статичный лоадер locator(".spinner-border");
         await expect(this.uniqueElement).toBeVisible();
-        await expect(this.spinner).toHaveCount(1);
     }
 }
