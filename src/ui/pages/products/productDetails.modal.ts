@@ -6,22 +6,22 @@ export class ProductsDetailsModal extends SalesPortalPage {
   readonly modalProductDetails = this.page.locator("#Product-details-modal-id")
   readonly uniqueElement = this.modalTitle;
 
-  readonly rowsText = async ()=> await this.page.evaluate(() => {
-    return [...document.querySelectorAll('.details.mb-3')]
-      .map(row => (row.textContent ?? '').replace(/\s+/g, ' '))
-  });
+  readonly rowsLocator = this.page.locator('.details.mb-3');
+  readonly rowsText = async () => {
+    const texts = await this.rowsLocator.allTextContents();
+    return texts.map(t => t.replace(/\s+/g, ' ').trim());
+  }
 
- parseModalData(dataArray: string[]): Record<string, string> {
-  const result = dataArray.reduce<Record<string, string>>((acc, item) => {
-    const [label, ...valueParts] = item.split(":");
-    const key = label?.toLowerCase().trim() ?? '';
-    const value = valueParts.join('').trim();
-    acc[key] = value;
-    return acc;
-  }, {});
+  parseModalData(dataArray: string[]): Record<string, string> {
+    const result = dataArray.reduce<Record<string, string>>((acc, item) => {
+      const [label, ...valueParts] = item.split(":");
+      const key = label?.toLowerCase()  ?? '';
+      const value = valueParts.join('').trim()
+      acc[key] = value;
+      return acc;
+    }, {});
 
-  delete result["created on"];
-  return result;
-}
+    return result;
+  }
 
 }

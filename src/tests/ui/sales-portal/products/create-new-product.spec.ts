@@ -44,7 +44,7 @@ test.describe("Sales Portal [Create Product]", ()=> {
         const productDataFilled = Object.fromEntries(
             Object.entries(productData).map(([key, value]) => [key, value.toString()]));
         const productDataFromPage = productDetailsModal.parseModalData(await productDetailsModal.rowsText())
-
+        delete productDataFromPage["created on"];
         expect(productDataFilled).toEqual(productDataFromPage)
     })
 })
