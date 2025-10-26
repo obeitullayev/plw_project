@@ -37,6 +37,7 @@ test.describe("Sales Portal [Create Product]", ()=> {
         await productListPage.waitForOpened()
         expect(productListPage.toastMessage).toHaveText(NOTIFICATIONS.PRODUCT_CREATED)
         expect(productListPage.firstTableRow).toBeVisible()
+        expect(productListPage.firstTableRowName).toHaveText(productData.name)
 
         await productListPage.clickButtonDetails()
         await productDetailsModal.waitForOpened()
