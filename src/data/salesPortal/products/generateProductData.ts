@@ -5,11 +5,11 @@ import { MANUFACTURERS } from "./manufacturers";
 
 export function generateProductData(params?: Partial<IProduct>): IProduct {
   return {
-    Name: faker.commerce.product() + faker.number.int({ min: 1, max: 100000 }),
-    Manufacturer: getRandomEnumValue(MANUFACTURERS),
-    Price: faker.number.int({ min: 1, max: 99999 }),
-    Amount: faker.number.int({ min: 0, max: 999 }),
-    Notes: faker.string.alphanumeric({ length: 250 }),
+    name: faker.commerce.product() + faker.number.int({ min: 1, max: 100000 }),
+    manufacturer: getRandomEnumValue(MANUFACTURERS),
+    price: faker.number.int({ min: 1, max: 99999 }),
+    amount: faker.number.int({ min: 0, max: 999 }),
+    notes: faker.string.alphanumeric({ length: 250 }),
     ...params,
   };
 }

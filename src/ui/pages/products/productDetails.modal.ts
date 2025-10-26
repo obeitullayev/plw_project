@@ -6,18 +6,22 @@ export class ProductsDetailsModal extends SalesPortalPage {
   readonly modalProductDetails = this.page.locator("#Product-details-modal-id")
   readonly uniqueElement = this.modalTitle;
 
-  async firstRowData() {
-    const headersLocators = await this.page.locator(".modal-open section .details h6").all()
-    const filterHeaders= headersLocators.filter((el, index) => index != 4 )
-    const headers = await Promise.all(filterHeaders.map((el) => el.innerText()));
+  readonly rowsText = async ()=> await this.page.evaluate(() => {
+    return [...document.querySelectorAll('.details.mb-3')]
+      .map(row => (row.textContent ?? '').replace(/\s+/g, ' '))
+  });
 
-    const row =  await this.page.locator('.modal-open section .details .ms-4').all()
-    const rowInnerData = row.filter((el, index) => index != 4 )
-    const rowFiltered= await Promise.all(rowInnerData.map((el) => el.innerText())) 
-    const resultingObj = Object.fromEntries(
-        headers.map((header, i) => [header.replace(/:$/, ""), rowFiltered[i] ?? ""])
-    );
-    return resultingObj
-  }
+ parseModalData(dataArray: string[]): Record<string, string> {
+  const result = dataArray.reduce<Record<string, string>>((acc, item) => {
+    const [label, ...valueParts] = item.split(":");
+    const key = label?.toLowerCase().trim() ?? '';
+    const value = valueParts.join(':').trim();
+    acc[key] = value;
+    return acc;
+  }, {});
+
+  delete result["created on"];
+  return result;
+}
 
 }

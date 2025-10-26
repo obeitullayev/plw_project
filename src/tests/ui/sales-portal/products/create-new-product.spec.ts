@@ -15,6 +15,7 @@ test.describe("Sales Portal [Create Product]", ()=> {
         const productListPage = new ProductsListPage(page);
         const addNewProductPage = new AddNewProductPage(page);
         const productDetailsModal = new ProductsDetailsModal(page)
+        const productData = generateProductData()
 
         await homePage.open()
 
@@ -29,7 +30,7 @@ test.describe("Sales Portal [Create Product]", ()=> {
         await productListPage.clickAddNewProduct()
 
         await addNewProductPage.waitForOpened()
-        const productData = generateProductData()
+
         await addNewProductPage.fillForm(productData)
         await addNewProductPage.clickSave()
 
@@ -42,7 +43,7 @@ test.describe("Sales Portal [Create Product]", ()=> {
 
         const productDataFilled = Object.fromEntries(
             Object.entries(productData).map(([key, value]) => [key, value.toString()]));
-        const productDataFromPage = await productDetailsModal.firstRowData()
+        const productDataFromPage = productDetailsModal.parseModalData(await productDetailsModal.rowsText())
 
         expect(productDataFilled).toEqual(productDataFromPage)
     })
