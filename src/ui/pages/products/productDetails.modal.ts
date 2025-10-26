@@ -15,7 +15,7 @@ export class ProductsDetailsModal extends SalesPortalPage {
   const result = dataArray.reduce<Record<string, string>>((acc, item) => {
     const [label, ...valueParts] = item.split(":");
     const key = label?.toLowerCase().trim() ?? '';
-    const value = valueParts.join(':').trim();
+    const value = valueParts.join('').trim();
     acc[key] = value;
     return acc;
   }, {});
