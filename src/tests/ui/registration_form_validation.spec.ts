@@ -1,5 +1,5 @@
 import test, {expect} from "@playwright/test";
-import { IInvalidCredential } from 'data/types';
+import { IInvalidCredential } from 'data/types/types';
 import path from "path";
 import fs from "fs"
 
