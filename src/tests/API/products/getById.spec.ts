@@ -41,6 +41,7 @@ test.describe("[API] [Sales Portal] [Products]", () => {
     const headers = loginResponse.headers();
     token = headers["authorization"]!;
     expect(token).toBeTruthy();
+    console.log(token)
 
     const productData = generateProductData();
     const createProductResponse = await request.post(baseURL + endpoints.products, {
