@@ -25,5 +25,5 @@ export const productSchema = {
     },
   },
   required: ["_id", "name", "amount", "price", "manufacturer", "createdOn"],
-  additionalProperties: true,
+  additionalProperties: false,
 };

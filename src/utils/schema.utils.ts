@@ -2,7 +2,9 @@ import { expect } from "@playwright/test";
 import Ajv from "ajv";
 
 export function validateJsonSchema(body: object, schema: object) {
-  const ajv = new Ajv();
+  const ajv = new Ajv({
+  strictRequired: true,
+});
   const validate = ajv.compile(schema);
 
   const isValid = validate(body);
