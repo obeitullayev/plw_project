@@ -4,8 +4,6 @@ import { createProductSchema } from "data/schemas/products/create.schema";
 import { STATUS_CODES } from "data/statusCodes";
 import _ from "lodash";
 import { validateResponse } from "utils/validation/validateResponse.utils";
-import { IProduct } from "data/types/product.types";
-import { MANUFACTURERS } from "data/salesPortal/products/manufacturers";
 import { IProductTestCase, positiveTestData } from "data/salesPortal/products/positiveTestDataAPI";
 
 test.describe("[API] [Sales Portal] [Products Create]", () => {
@@ -41,14 +39,4 @@ test.describe("[API] [Sales Portal] [Products Create]", () => {
     });
   }
 
-  // test("NOT create product with invalid data", async ({ loginApiService, productsApi }) => {
-  //   token = await loginApiService.loginAsAdmin();
-  //   const productData = generateProductData();
-  //   const createdProduct = await productsApi.create({ ...productData, name: 123 } as unknown as IProduct, token);
-  //   validateResponse(createdProduct, {
-  //     status: STATUS_CODES.BAD_REQUEST,
-  //     IsSuccess: false,
-  //     ErrorMessage: "Incorrect request body",
-  //   });
-  // });
 });
