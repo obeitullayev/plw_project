@@ -3,7 +3,7 @@ import { credentials } from "config/env";
 import { apiConfig } from "config/apiConfig";
 import { generateProductData } from "data/salesPortal/products/generateProductData";
 import { STATUS_CODES } from "data/statusCodes";
-import { validateResponse } from "utils/validateResponse.utils";
+import { validateResponse } from "utils/validation/validateResponse.utils";
 import { productsResponseSchema } from "data/schemas/products/allProducts.schema";
 import { IProductFromResponse } from "data/types/product.types";
 

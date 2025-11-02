@@ -1,21 +1,13 @@
-import test, {expect} from "@playwright/test";
+import { test, expect } from "fixtures/page.fixture";
 import { credentials } from "config/env";
-import { HomePage } from "ui/pages/home.page";
-import { Login } from "ui/pages/login.page";
 import { generateProductData } from "data/salesPortal/products/generateProductData";
-import { AddNewProductPage } from "ui/pages/products/addNewProduct.page";
-import { ProductsListPage } from "ui/pages/products/productsList.page";
 import { NOTIFICATIONS } from "data/salesPortal/notifications";
-import { ProductsDetailsModal } from "ui/pages/products/productDetails.modal";
+import _ from "lodash";
+import { ProductsListPage } from "ui/pages/products/productsList.page";
 
 test.describe("Sales Portal [Create Product]", ()=> {
-    test('Create new product', async({page})=> {
-        const homePage = new HomePage(page);
-        const loginPage = new Login(page);
-        const productListPage = new ProductsListPage(page);
-        const addNewProductPage = new AddNewProductPage(page);
-        const productDetailsModal = new ProductsDetailsModal(page)
-        const productData = generateProductData()
+    test('Create new product', async( {homePage, addNewProductPage, productsListPage, loginPage})=> {
+        const productData = generateProductData({ notes: "" })
 
         await homePage.open()
 
@@ -26,26 +18,33 @@ test.describe("Sales Portal [Create Product]", ()=> {
         await homePage.waitForOpened()
         await homePage.clickOnViewModule("Products")
 
-        await productListPage.waitForOpened()
-        await productListPage.clickAddNewProduct()
+        await productsListPage.waitForOpened()
+        await productsListPage.clickAddNewProduct()
 
         await addNewProductPage.waitForOpened()
-
         await addNewProductPage.fillForm(productData)
         await addNewProductPage.clickSave()
 
-        await productListPage.waitForOpened()
-        expect(productListPage.toastMessage).toHaveText(NOTIFICATIONS.PRODUCT_CREATED)
-        expect(productListPage.firstTableRow).toBeVisible()
-        expect(productListPage.firstTableRowName).toHaveText(productData.name)
+        await productsListPage.waitForOpened()
+        expect(productsListPage.toastMessage).toHaveText(NOTIFICATIONS.PRODUCT_CREATED) 
+        expect(productsListPage.tableRowByName(productData.name)).toBeVisible()
+        const tableData = await productsListPage.productTableData(productData.name)
+        expect(_.omit(tableData, ["createdOn"])).toEqual(_.omit(productData, ["amount", "notes"]))
 
-        await productListPage.clickButtonDetails()
-        await productDetailsModal.waitForOpened()
+        await productsListPage.closeNotification()
+        await productsListPage.clickButtonDetails(productData.name)
+        await productsListPage.productDetails.waitForOpened()
+        const productDataFromPage = await productsListPage.productDetails.parseModalData()
+        const productDataFilled = _.omit(productDataFromPage, ["createdOn"])
+        expect(productData).toEqual(productDataFilled)
 
-        const productDataFilled = Object.fromEntries(
-            Object.entries(productData).map(([key, value]) => [key, value.toString()]));
-        const productDataFromPage = productDetailsModal.parseModalData(await productDetailsModal.rowsText())
-        delete productDataFromPage["created on"];
-        expect(productDataFilled).toEqual(productDataFromPage)
+        await productsListPage.productDetails.closeModalDetails()
+        await productsListPage.productDetails.modalClosed()
+        await productsListPage.buttonDeleteInRow(productData.name).click()
+        await productsListPage.deleteModal.waitForOpened()
+        productsListPage.deleteModal.approveToDeleteProduct()
+        await productsListPage.waitForOpened()
+        await expect(productsListPage.toastMessage).toHaveText(NOTIFICATIONS.PRODUCT_DELETED)
+        await expect(productsListPage.tableRowByName(productData.name)).not.toBeVisible()
     })
 })

@@ -2,7 +2,7 @@ import { SalesPortalPage } from "./salesPortal.page";
 import { ICredentials } from "data/types/credentials.types";
 import { expect, Locator } from "@playwright/test";
 
-export class Login extends SalesPortalPage { 
+export class LoginPage extends SalesPortalPage { 
 
     readonly emailInput = this.page.locator("#emailinput");
     readonly passwordInput = this.page.locator("#passwordinput");

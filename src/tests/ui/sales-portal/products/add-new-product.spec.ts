@@ -1,13 +1,13 @@
-import test, { expect } from "@playwright/test";
+import { test, expect } from "fixtures/page.fixture";
 import { credentials } from "config/env";
 import { NOTIFICATIONS } from "data/salesPortal/notifications";
 import { generateProductData } from "data/salesPortal/products/generateProductData";
 // import { MANUFACTURERS } from "data/salesPortal/products/manufacturers";
 // import { IProduct } from "data/types/product.types";
-import { HomePage } from "ui/pages/home.page";
-import { Login } from "ui/pages/login.page";
-import { AddNewProductPage } from "ui/pages/products/addNewProduct.page";
-import { ProductsListPage } from "ui/pages/products/productsList.page";
+// import { HomePage } from "ui/pages/home.page";
+// import { Login } from "ui/pages/login.page";
+// import { AddNewProductPage } from "ui/pages/products/addNewProduct.page";
+// import { ProductsListPage } from "ui/pages/products/productsList.page";
 
 // const productData: IProduct = {
 //   name: "Product" + Date.now(),
@@ -18,18 +18,12 @@ import { ProductsListPage } from "ui/pages/products/productsList.page";
 // };
 
 test.describe("[Sales Portal] [Products]", async () => {
-  test.skip("Add new product OLD", async ({ page }) => {
-    const homePage = new HomePage(page);
-    const productsListPage = new ProductsListPage(page);
-    const addNewProductPage = new AddNewProductPage(page);
+  test.skip("Add new product OLD", async ({ homePage, productsListPage, addNewProductPage, loginPage }) => { 
 
     // const spinner = page.locator(".spinner-border");
     // const toastMessage = page.locator(".toast-body");
 
     //login page
-    const emailInput = page.locator("#emailinput");
-    const passwordInput = page.locator("#passwordinput");
-    const loginButton = page.locator("button[type='submit']");
 
     //home page
     // const welcomeText = page.locator(".welcome-text");
@@ -51,10 +45,9 @@ test.describe("[Sales Portal] [Products]", async () => {
 
     // await page.goto(salesPortalUrl); //fix
     await homePage.open();
-    await expect(emailInput).toBeVisible();
-    await emailInput.fill(credentials.username);
-    await passwordInput.fill(credentials.password);
-    await loginButton.click();
+    await loginPage.waitForOpened();
+    await loginPage.fillCredentials(credentials)
+    await loginPage.clickLogin()
 
     await homePage.waitForOpened();
     // await expect(welcomeText).toBeVisible();
@@ -89,12 +82,7 @@ test.describe("[Sales Portal] [Products]", async () => {
     await expect(productsListPage.firstTableRow).toBeVisible();
   });
 
-  test("Add new product", async ({ page }) => {
-    const homePage = new HomePage(page);
-    const productsListPage = new ProductsListPage(page);
-    const addNewProductPage = new AddNewProductPage(page);
-    const loginPage = new Login(page);
-
+  test("Add new product", async ({ homePage, productsListPage, addNewProductPage, loginPage }) => {
     await homePage.open();
     await loginPage.waitForOpened();
     await loginPage.fillCredentials(credentials)
@@ -111,7 +99,7 @@ test.describe("[Sales Portal] [Products]", async () => {
     await productsListPage.waitForOpened();
     await expect(productsListPage.toastMessage).toContainText(NOTIFICATIONS.PRODUCT_CREATED);
     await expect(productsListPage.firstTableRow).toBeVisible();
-    await expect(productsListPage.firstTableRowName).toHaveText(productData.name);
+    expect(productsListPage.tableRowByName(productData.name)).toBeVisible()
   });
 });
 
