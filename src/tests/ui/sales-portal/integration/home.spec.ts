@@ -1,6 +1,4 @@
 import { test, expect } from "fixtures/business.fixture";
-import { SALES_PORTAL_URL } from "config/env";
-import { IMetrics } from "data/types/home.types";
 import { generateMetricData } from "data/salesPortal/generateMetricData";
 import numeral from "numeral";
 
