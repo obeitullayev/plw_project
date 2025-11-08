@@ -12,7 +12,7 @@ export class ProductsDetailsModal extends SalesPortalPage {
   readonly editButton = this.uniqueElement.locator("button.btn-primary");
   readonly cancelButton = this.uniqueElement.locator("button.btn-secondary");
 
-  async parseModalData(): Promise<IProductDetails> {
+  async getData(): Promise<IProductDetails> {
     const [name, amount, price, manufacturer, createdOn, notes] = await this.modalData.allTextContents();
 
     return {

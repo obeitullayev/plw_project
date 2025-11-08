@@ -1,12 +1,11 @@
- 
-import { HomePage } from "ui/pages/home.page";
 import {test as base, expect} from "@playwright/test";
+import { HomePage } from "ui/pages/home.page";
 import { ProductsListPage } from "ui/pages/products/productsList.page";
 import { AddNewProductPage } from "ui/pages/products/addNewProduct.page";
 import { LoginPage } from "ui/pages/login.page";
 
 
-interface IPages {
+export interface IPages {
     homePage:  HomePage;
     productsListPage: ProductsListPage;
     addNewProductPage: AddNewProductPage; 
