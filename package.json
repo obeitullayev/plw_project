@@ -17,7 +17,8 @@
     "@types/dotenv": "^6.1.1",
     "@types/lodash": "^4.17.20",
     "@types/moment": "^2.11.29",
-    "@types/node": "^24.6.2"
+    "@types/node": "^24.6.2",
+    "@types/numeral": "^2.0.5"
   },
   "dependencies": {
     "@faker-js/faker": "^9.9.0",
@@ -25,6 +26,7 @@
     "bson": "^6.10.4",
     "dotenv": "^17.2.3",
     "lodash": "^4.17.21",
-    "moment": "^2.30.1"
+    "moment": "^2.30.1",
+    "numeral": "^2.0.6"
   }
 }

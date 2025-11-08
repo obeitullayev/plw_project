@@ -4,10 +4,10 @@ import { IResponseFields } from "./core.types";
 export type HomeModuleButton = "Products" | "Customers" | "Orders";
 
 export interface IMetricsResponse extends IResponseFields {
-  Metrics: Metrics;
+  Metrics: IMetrics;
 }
 
-export interface Metrics {
+export interface IMetrics {
   orders: {
     totalRevenue: number;
     totalOrders: number;
