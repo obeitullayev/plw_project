@@ -1,6 +1,6 @@
 import { Locator } from "@playwright/test";
 import { SalesPortalPage } from "./salesPortal.page";
-import { HomeModuleButton } from "data/types/homeButton.types";
+import { HomeModuleButton } from "data/types/home.types";
 
 
 export class HomePage extends SalesPortalPage {
@@ -9,6 +9,9 @@ export class HomePage extends SalesPortalPage {
   readonly customersButton = this.page.locator("#customers-from-home");
   readonly ordersButton = this.page.locator("#orders-from-home");
   readonly uniqueElement = this.welcomeText;
+  readonly totalOrders = this.page.locator('#total-orders-container p')
+  readonly canceledOrders = this.page.locator('#canceled-orders-container p')
+  readonly newCustomers = this.page.locator('#total-customers-container p')
 
   async clickOnViewModule(module: HomeModuleButton) {
     const moduleButtons: Record<HomeModuleButton, Locator> = {
