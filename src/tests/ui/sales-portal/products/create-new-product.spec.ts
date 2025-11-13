@@ -3,7 +3,6 @@ import { credentials } from "config/env";
 import { generateProductData } from "data/salesPortal/products/generateProductData";
 import { NOTIFICATIONS } from "data/salesPortal/notifications";
 import _ from "lodash";
-import { ProductsListPage } from "ui/pages/products/productsList.page";
 
 test.describe("Sales Portal [Create Product]", ()=> {
     test('Create new product', async( {homePage, addNewProductPage, productsListPage, loginPage})=> {
@@ -33,16 +32,16 @@ test.describe("Sales Portal [Create Product]", ()=> {
 
         await productsListPage.closeNotification()
         await productsListPage.clickButtonDetails(productData.name)
-        await productsListPage.productDetails.waitForOpened()
-        const productDataFromPage = await productsListPage.productDetails.parseModalData()
+        await productsListPage.detailsModal.waitForOpened()
+        const productDataFromPage = await productsListPage.detailsModal.getData()
         const productDataFilled = _.omit(productDataFromPage, ["createdOn"])
         expect(productData).toEqual(productDataFilled)
 
-        await productsListPage.productDetails.closeModalDetails()
-        await productsListPage.productDetails.modalClosed()
-        await productsListPage.buttonDeleteInRow(productData.name).click()
+        await productsListPage.detailsModal.clickClose()
+        await productsListPage.detailsModal.modalClosed()
+        await productsListPage.deleteButton(productData.name).click()
         await productsListPage.deleteModal.waitForOpened()
-        productsListPage.deleteModal.approveToDeleteProduct()
+        productsListPage.deleteModal.clickConfirm()
         await productsListPage.waitForOpened()
         await expect(productsListPage.toastMessage).toHaveText(NOTIFICATIONS.PRODUCT_DELETED)
         await expect(productsListPage.tableRowByName(productData.name)).not.toBeVisible()

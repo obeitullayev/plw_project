@@ -1,4 +1,4 @@
-import { test, expect } from "fixtures/page.fixture";
+import { test, expect } from "fixtures/business.fixture";
 import { credentials } from "config/env";
 import { NOTIFICATIONS } from "data/salesPortal/notifications";
 import { generateProductData } from "data/salesPortal/products/generateProductData";
@@ -18,6 +18,8 @@ import { generateProductData } from "data/salesPortal/products/generateProductDa
 // };
 
 test.describe("[Sales Portal] [Products]", async () => {
+  let id = "";
+  let token = "";
   test.skip("Add new product OLD", async ({ homePage, productsListPage, addNewProductPage, loginPage }) => { 
 
     // const spinner = page.locator(".spinner-border");
@@ -81,6 +83,29 @@ test.describe("[Sales Portal] [Products]", async () => {
     await expect(productsListPage.toastMessage).toContainText(NOTIFICATIONS.PRODUCT_CREATED);
     await expect(productsListPage.firstTableRow).toBeVisible();
   });
+
+  test("Add new product with services", async ({
+    loginUIService,
+    // homeUIService,
+    // productsListUIService,
+    addNewProductUIService,
+    productsListPage,
+  }) => {
+    token = await loginUIService.loginAsAdmin();
+    // await homeUIService.openModule("Products");
+    // await productsListUIService.openAddNewProductPage();
+    await addNewProductUIService.open();
+    const createdProduct = await addNewProductUIService.create();
+    id = createdProduct._id;
+    await expect(productsListPage.toastMessage).toContainText(NOTIFICATIONS.PRODUCT_CREATED);
+    await expect(productsListPage.tableRowByName(createdProduct.name)).toBeVisible();
+  });
+
+  test.afterEach(async ({ productsApiService }) => {
+    if (id) await productsApiService.delete(token, id);
+    id = "";
+  });
+
 
   test("Add new product", async ({ homePage, productsListPage, addNewProductPage, loginPage }) => {
     await homePage.open();

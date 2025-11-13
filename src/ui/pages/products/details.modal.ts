@@ -25,8 +25,17 @@ export class ProductsDetailsModal extends SalesPortalPage {
     };
   }
 
-  async closeModalDetails(){
-    await this.closeButton.click()
+  async clickClose() {
+    await this.closeButton.click();
   }
+
+  async clickCancel() {
+    await this.cancelButton.click();
+  }
+
+  async clickEdit() {
+    await this.editButton.click();
+  }
+
 
 }

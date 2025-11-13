@@ -18,8 +18,8 @@ export abstract class SalesPortalPage extends BasePage {
     await expect(this.uniqueElement).not.toBeVisible()
   }
 
-  async open() {
-    await this.page.goto(SALES_PORTAL_URL);
+  async open(route?: string) {
+    await this.page.goto(SALES_PORTAL_URL + route);
   }
 
   async closeNotification(){

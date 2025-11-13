@@ -25,3 +25,4 @@ export class HomePage extends SalesPortalPage {
     await moduleButtons[module].click();
   }
 }
+
