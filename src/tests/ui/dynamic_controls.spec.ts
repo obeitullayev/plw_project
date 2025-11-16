@@ -1,7 +1,12 @@
 import test, {expect} from "@playwright/test";
+import { TAGS } from "data/tags";
 
 test.describe("[Dynamic Controls]", ()=> {
-    test("Should open page Dynamic Controls and remove and back checkbox", async ({page}) => {
+    test("Should open page Dynamic Controls and remove and back checkbox", {
+            tag: [
+              TAGS.UI,
+            ],
+          }, async ({page}) => {
         const url = "https://the-internet.herokuapp.com/"
         const link = page.locator("a[href='/dynamic_controls']")
         const header =  page.getByRole('link', { name: 'Dynamic Controls' })

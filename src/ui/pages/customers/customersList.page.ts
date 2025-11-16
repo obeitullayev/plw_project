@@ -1,14 +1,19 @@
 import { IProductInTable, ProductsTableHeader } from "data/types/product.types";
-import { SalesPortalPage } from "../salesPortal.page";
-import { MANUFACTURERS } from "data/salesPortal/products/manufacturers";
+import { SalesPortalPage } from "../salesPortal.page"; 
 import { ConfirmationModal } from "../confirmation.modal";
 import { AddNewCustomerPage } from "./create.page";
 import { ICustomer } from "data/types/customer.types";
 import { COUNTRY } from "data/salesPortal/customers/country";
+import { logStep } from "utils/report/logStep.utils";
+import test from "@playwright/test";
+import { ProductsDetailsModal } from "../products/details.modal";
+import { EditCustomerPage } from "./editCustomer.page";
 
 export class CustomersListPage extends SalesPortalPage {
   readonly addCustomerPage = new AddNewCustomerPage(this.page)
   readonly deleteModal = new ConfirmationModal(this.page)
+  readonly detailsModal = new ProductsDetailsModal(this.page)
+  readonly editPage = new EditCustomerPage(this.page)
 
   readonly customersPageTitle = this.page.locator("h2.fw-bold");
   readonly addNewCustomerButton = this.page.locator('[name="add-button"]');
@@ -33,27 +38,32 @@ export class CustomersListPage extends SalesPortalPage {
 //       .locator("thead th", { has: this.page.locator("div[current]", { hasText: name }) })
 //       .locator(`i.${direction === "asc" ? "bi-arrow-down" : "bi-arrow-up"}`);
 
-
+@logStep("Clicking the Add New Customer button")
   async clickAddNewCustomer() {
     await this.addNewCustomerButton.click();
   }
 
+@logStep("Opening customer details")
   async clickButtonDetails(name: string) {
     await this.detailsButton(name).click();
   }
 
+@logStep("Opening edit form")
   async clickEditCustomer(name: string) {
     await this.editButton(name).click();
   }
 
+@logStep("Entering text into search field")
   async fillSearchInput(text: string) {
     await this.searchInput.fill(text);
   }
 
+@logStep("Clicking the Search button")
   async clickSearch() {
     await this.searchButton.click();
   }
 
+@logStep("Retrieving customer table data via email")
   async customerTableData(customerEmail: string): Promise<ICustomer>{
     const [email, name,  country, createdOn] = await this.tableRowByEmail(customerEmail).locator("td").allInnerTexts()
 
@@ -65,6 +75,7 @@ export class CustomersListPage extends SalesPortalPage {
     }
   }
 
+@logStep("Fetching all customer table rows")
   async getTableData(): Promise<ICustomer[]> {
     const data: ICustomer[] = [];
 
@@ -82,12 +93,14 @@ export class CustomersListPage extends SalesPortalPage {
   }
 
   async clickAction(customerName: string, button: "edit" | "delete" | "details") {
-    if (button === "edit") await this.editButton(customerName).click();
-    if (button === "delete") await this.deleteButton(customerName).click();
-    if (button === "details") await this.detailsButton(customerName).click();
+    await test.step(`Clicking ${button} action for customer`, async () =>{
+      if (button === "edit") await this.editButton(customerName).click();
+      if (button === "delete") await this.deleteButton(customerName).click();
+      if (button === "details") await this.detailsButton(customerName).click();
+    })
   }
 
-//   async clickTableHeader(name: ProductsTableHeader) {
+//   async clickTableHeader(name: CustomersTableHeader) {
 //     await this.tableHeaderNamed(name).click();
 //   }
 }

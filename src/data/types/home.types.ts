@@ -1,7 +1,7 @@
 import { IResponseFields } from "./core.types";
 
 
-export type HomeModuleButton = "Products" | "Customers" | "Orders";
+export type HomeModuleButton = "Products" | "Customers" | "Orders" | "Home";
 
 export interface IMetricsResponse extends IResponseFields {
   Metrics: IMetrics;

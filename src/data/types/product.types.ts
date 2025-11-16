@@ -6,7 +6,7 @@ export interface IProduct {
   manufacturer: MANUFACTURERS;
   price: number;
   amount: number;
-  notes?: string;
+  notes?: string | undefined;
 }
 
 export interface ICreatedOn {

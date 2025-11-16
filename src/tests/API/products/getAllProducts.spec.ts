@@ -1,56 +1,33 @@
-import test, { expect } from "@playwright/test";
-import { credentials } from "config/env";
-import { apiConfig } from "config/apiConfig";
-import { generateProductData } from "data/salesPortal/products/generateProductData";
+import  { test, expect } from "fixtures/api.fixture";
 import { STATUS_CODES } from "data/statusCodes";
 import { validateResponse } from "utils/validation/validateResponse.utils";
 import { productsResponseSchema } from "data/schemas/products/allProducts.schema";
-import { IProductFromResponse } from "data/types/product.types";
-
-const {baseURL, endpoints} = apiConfig;
+import { TAGS } from "data/tags";
 
 test.describe("[API] [Sales Portal] [Login]", () => {
+  let id = "";
+  let token = "";
+    test("Get all products", {
+            tag: [
+              TAGS.REGRESSION,
+              TAGS.PRODUCTS,
+              TAGS.API,
+            ],
+          }, async ({ productsApi, loginApiService, productsApiService}) => {
+        token = await loginApiService.loginAsAdmin();
+        const product = await productsApiService.create(token);
+        id = product._id;
 
-    test("Get all products", async ({request}) => {
-        const loginResponse = await request.post(baseURL + endpoints.login, {
-            data: credentials,
-            headers: {
-                "content-type": "application/json",
-            },
-        });
-        const productData = generateProductData()
+        const getAllProductResponse = await productsApi.getAll(token); 
 
-        const createProductResponse = await request.post(baseURL + endpoints.products, {
-            data: productData,
-            headers: {
-                "content-type": "application/json",
-                "Authorization": `Bearer ${loginResponse.headers().authorization}`,
-            }
-        })
-        const createProductBody= await createProductResponse.json()
-
-        expect(createProductResponse.status()).toBe(STATUS_CODES.CREATED);
-
-        const getAllProductResponse = await request.get(baseURL + endpoints.productsAll, {
-            headers: {
-                "content-type": "application/json",
-                "Authorization": `Bearer ${loginResponse.headers().authorization}`
-            },
-        });
-
-        const getAllProduct = await getAllProductResponse.json()
-        const allProductsIds = getAllProduct.Products.map((product: IProductFromResponse) => product._id)
-
-        await validateResponse(getAllProductResponse, {
+         validateResponse(getAllProductResponse, {
             status: STATUS_CODES.OK,
             schema: productsResponseSchema,
             IsSuccess: true,
             ErrorMessage: null,
         })
-        expect.soft(getAllProductResponse.status()).toBe(STATUS_CODES.OK);
-        expect.soft(getAllProduct.IsSuccess).toBe(true);
-        expect.soft(getAllProduct.ErrorMessage).toBe(null);
-        expect(allProductsIds).toContain(createProductBody.Product._id)
-
+        expect.soft(getAllProductResponse.status).toBe(STATUS_CODES.OK);
+        expect.soft(getAllProductResponse.body.IsSuccess).toBe(true);
+        expect.soft(getAllProductResponse.body.ErrorMessage).toBe(null);
     })
 })

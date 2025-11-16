@@ -6,6 +6,7 @@ import { ICustomer, ICustomerDetails, ICustomerResponse } from "data/types/custo
 import _ from "lodash"; 
 import { AddNewCustomerPage } from "ui/pages/customers/create.page";
 import { CustomersListPage } from "ui/pages/customers/customersList.page";
+import { logStep } from "utils/report/logStep.utils";
 
 export class AddNewCustomerUIService {
   addNewCustomerPage: AddNewCustomerPage;
@@ -16,11 +17,13 @@ export class AddNewCustomerUIService {
     this.customersListPage = new CustomersListPage(page);
   }
 
+@logStep("Opening the Add New Customer page")
   async open() {
     await this.addNewCustomerPage.open("customers/add");
     await this.addNewCustomerPage.waitForOpened();
   }
 
+@logStep("Creating a new customer with provided data")
   async create(customerData?: Partial<ICustomerDetails>) {
     const data = generateCustomerData(customerData);
     await this.addNewCustomerPage.fillForm(data);

@@ -5,6 +5,7 @@ import { STATUS_CODES } from "data/statusCodes";
 import _ from "lodash";
 import { validateResponse } from "utils/validation/validateResponse.utils";
 import { IProductTestCase, positiveTestData } from "data/salesPortal/products/positiveTestDataAPI";
+import { TAGS } from "data/tags";
 
 test.describe("[API] [Sales Portal] [Products Create]", () => {
   let id = "";
@@ -15,11 +16,17 @@ test.describe("[API] [Sales Portal] [Products Create]", () => {
   });
 
   for (const testData of positiveTestData as IProductTestCase[]) {
-    test(`${testData.title}`, async ({ loginApiService, productsApi }) => {
+    test(`${testData.title}`, {
+            tag: [
+              TAGS.REGRESSION,
+              TAGS.PRODUCTS,
+              TAGS.API,
+            ],
+          }, async ({ loginApiService, productsApi }) => {
       token = await loginApiService.loginAsAdmin();
       const productData = generateProductData();
       const createdProduct = await productsApi.create({...productData,
-        name: testData.data.name,
+        name: testData.data.name!,
         manufacturer: testData.data.manufacturer,
         price: testData.data.price,
         amount: testData.data.amount,

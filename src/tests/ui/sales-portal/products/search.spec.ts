@@ -1,3 +1,4 @@
+import { TAGS } from "data/tags";
 import { IProduct } from "data/types/product.types";
 import { expect, test } from "fixtures/business.fixture";
 
@@ -7,8 +8,16 @@ test.describe("[Sales Portal] [Products]", () => {
 
   const fields = ["name", "price", "manufacturer"] as (keyof IProduct)[];
   for (const field of fields) {
-    test(`Search by ${field} field`, async ({ loginUIService, productsApiService, productsListUIService }) => {
-      token = await loginUIService.loginAsAdmin();
+    test(`Search by ${field} field`, {
+            tag: [
+              TAGS.REGRESSION,
+              TAGS.PRODUCTS,
+              TAGS.UI,
+              TAGS.VISUAL_REGRESSION,
+              TAGS.SMOKE
+            ],
+          }, async ({ productsListPage, productsApiService, productsListUIService }) => {
+      token = await productsListPage.getAuthToken();
       const product = await productsApiService.create(token);
       id = product._id;
       await productsListUIService.open();
@@ -21,8 +30,11 @@ test.describe("[Sales Portal] [Products]", () => {
     if (id) await productsApiService.delete(token, id);
     id = "";
   });
-  test.skip("Search by name", async ({
-    loginUIService,
+  test.skip("Search by name", {
+            tag: [
+              TAGS.UI,
+            ],
+          }, async ({ 
     productsApiService,
     productsListUIService,
     productsListPage,
@@ -34,33 +46,39 @@ test.describe("[Sales Portal] [Products]", () => {
     search by product name
     verify product in table
     */
-    token = await loginUIService.loginAsAdmin();
+    token = await productsListPage.getAuthToken();
     const product = await productsApiService.create(token);
     await productsListUIService.open();
     await productsListUIService.search(product.name);
     await expect(productsListPage.tableRowByName(product.name)).toBeVisible();
   });
 
-  test.skip("Search by price", async ({
-    loginUIService,
+  test.skip("Search by price", {
+            tag: [
+              TAGS.UI,
+            ],
+          }, async ({ 
     productsApiService,
     productsListUIService,
     productsListPage,
   }) => {
-    token = await loginUIService.loginAsAdmin();
+    token = await productsListPage.getAuthToken();
     const product = await productsApiService.create(token);
     await productsListUIService.open();
     await productsListUIService.search(product.price.toString());
     await expect(productsListPage.tableRowByName(product.name)).toBeVisible();
   });
 
-  test.skip("Search by manufacturer", async ({
-    loginUIService,
+  test.skip("Search by manufacturer", {
+            tag: [
+              TAGS.UI,
+            ],
+          }, async ({ 
     productsApiService,
     productsListUIService,
     productsListPage,
   }) => {
-    token = await loginUIService.loginAsAdmin();
+    token = await productsListPage.getAuthToken();
     const product = await productsApiService.create(token);
     await productsListUIService.open();
     await productsListUIService.search(product.manufacturer);

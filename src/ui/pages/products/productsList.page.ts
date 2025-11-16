@@ -4,6 +4,8 @@ import { ProductsDetailsModal } from "./details.modal";
 import { MANUFACTURERS } from "data/salesPortal/products/manufacturers";
 import { ConfirmationModal } from "../confirmation.modal";
 import { EditProductPage } from "./editProduct.page";
+import { test } from "fixtures";
+import { logStep } from "utils/report/logStep.utils";
 
 export class ProductsListPage extends SalesPortalPage {
   readonly detailsModal = new ProductsDetailsModal(this.page)
@@ -33,27 +35,32 @@ export class ProductsListPage extends SalesPortalPage {
       .locator("thead th", { has: this.page.locator("div[current]", { hasText: name }) })
       .locator(`i.${direction === "asc" ? "bi-arrow-down" : "bi-arrow-up"}`);
 
-
+@logStep("Clicking the Add New Product button")
   async clickAddNewProduct() {
     await this.addNewProductButton.click();
   }
 
+@logStep("Opening product details")
   async clickButtonDetails(name: string) {
     await this.detailsButton(name).click();
   }
 
+@logStep("Opening edit form for product")
   async clickEditProduct(name: string) {
     await this.editButton(name).click();
   }
 
+@logStep("Entering text into the product search field")
   async fillSearchInput(text: string) {
     await this.searchInput.fill(text);
   }
 
+@logStep("Clicking the Search button")
   async clickSearch() {
     await this.searchButton.click();
   }
 
+@logStep("Retrieving product table data")
   async productTableData(productName: string): Promise<IProductInTable>{
     const [name, price, manufacturer, createdOn] = await this.tableRowByName(productName).locator("td").allInnerTexts()
 
@@ -65,6 +72,7 @@ export class ProductsListPage extends SalesPortalPage {
     }
   }
 
+@logStep("Fetching all product rows from the table")
   async getTableData(): Promise<IProductInTable[]> {
     const data: IProductInTable[] = [];
 
@@ -82,12 +90,16 @@ export class ProductsListPage extends SalesPortalPage {
   }
 
   async clickAction(productName: string, button: "edit" | "delete" | "details") {
-    if (button === "edit") await this.editButton(productName).click();
-    if (button === "delete") await this.deleteButton(productName).click();
-    if (button === "details") await this.detailsButton(productName).click();
+    await test.step(`Clicking ${button} action for product`, async () =>{
+      if (button === "edit") await this.editButton(productName).click();
+      if (button === "delete") await this.deleteButton(productName).click();
+      if (button === "details") await this.detailsButton(productName).click();
+    })
   }
 
   async clickTableHeader(name: ProductsTableHeader) {
-    await this.tableHeaderNamed(name).click();
+    await test.step(`Clicking table header: ${name}`, async () =>{
+      await this.tableHeaderNamed(name).click();
+    })
   }
 }

@@ -1,4 +1,4 @@
-import { Page } from "@playwright/test";
+import test, { Page } from "@playwright/test";
 import { HomeModuleButton } from "data/types/home.types";
 import {  HomePage } from "ui/pages/home.page";
 import { ProductsListPage } from "ui/pages/products/productsList.page";
@@ -12,10 +12,11 @@ export class HomeUIService {
   }
 
   async openModule(moduleName: HomeModuleButton) {
+    await test.step(`Opening ${moduleName} module`, async () =>{
     await this.homePage.clickOnViewModule(moduleName);
 
     if (moduleName === "Products") {
       await this.productsListPage.waitForOpened();
-    }
+    }})
   }
 }
