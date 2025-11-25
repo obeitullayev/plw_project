@@ -3,15 +3,11 @@ import { credentials } from "config/env";
 import { ICredentials } from "data/types/credentials.types";
 import { HomePage } from "ui/pages/home.page";
 import { LoginPage } from "ui/pages/login.page";
+import { BaseUiService } from "./baseUiService";
 
-export class LoginUIService {
-  homePage: HomePage;
-  loginPage: LoginPage;
-
-  constructor(private page: Page) {
-    this.homePage = new HomePage(page);
-    this.loginPage = new LoginPage(page);
-  }
+export class LoginUIService extends BaseUiService {
+  private readonly homePage: HomePage = new HomePage(this.page);
+  private readonly loginPage: LoginPage = new LoginPage(this.page);
 
   async loginAsAdmin() {
     return await this.login(credentials);

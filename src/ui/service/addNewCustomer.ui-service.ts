@@ -6,15 +6,16 @@ import { ICustomer, ICustomerDetails, ICustomerResponse } from "data/types/custo
 import _ from "lodash"; 
 import { AddNewCustomerPage } from "ui/pages/customers/create.page";
 import { CustomersListPage } from "ui/pages/customers/customersList.page";
+import { BaseUiService } from "./baseUiService";
 
-export class AddNewCustomerUIService {
-  addNewCustomerPage: AddNewCustomerPage;
-  customersListPage: CustomersListPage;
+export class AddNewCustomerUIService extends BaseUiService {
+  private readonly addNewCustomerPage: AddNewCustomerPage = new AddNewCustomerPage(this.page);
+  private readonly customersListPage: CustomersListPage = new CustomersListPage(this.page);
 
-  constructor(private page: Page) {
-    this.addNewCustomerPage = new AddNewCustomerPage(page);
-    this.customersListPage = new CustomersListPage(page);
-  }
+  // constructor(private page: Page) {
+  //   this.addNewCustomerPage = new AddNewCustomerPage(page);
+  //   this.customersListPage = new CustomersListPage(page);
+  // }
 
   async open() {
     await this.addNewCustomerPage.open("customers/add");
