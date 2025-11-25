@@ -5,18 +5,12 @@ import { AddNewCustomerPage } from "ui/pages/customers/create.page";
 import { CustomersListPage } from "ui/pages/customers/customersList.page";
 import { EditCustomerPage } from "ui/pages/customers/editCustomer.page";
 import { convertToFullDateAndTime } from "utils/date.utils";
-import { logStep } from "utils/report/logStep.utils";
+import { BaseUiService } from "./baseUiService";
 
-export class CustomersListUIService {
-  customersListPage: CustomersListPage;
-  addNewCustomerPage: AddNewCustomerPage;
-  editCustomerPage: EditCustomerPage;
-
-  constructor(private page: Page) {
-    this.customersListPage = new CustomersListPage(page);
-    this.addNewCustomerPage = new AddNewCustomerPage(page);
-    this.editCustomerPage = new EditCustomerPage(page);
-  }
+export class CustomersListUIService extends BaseUiService {
+  customersListPage: CustomersListPage = new CustomersListPage(this.page);
+  addNewCustomerPage: AddNewCustomerPage = new AddNewCustomerPage(this.page);
+  //editCustomerPage: EditCustomerPage = new EditCustomerPage(this.page);
 
 @logStep("Opening the Add New Customer page from the customers list")
   async openAddNewCustomerPage() {
