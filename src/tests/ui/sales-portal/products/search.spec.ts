@@ -1,9 +1,9 @@
 import { TAGS } from "data/tags";
-import { IProduct } from "data/types/product.types";
+import { IProduct, IProductFromResponse } from "data/types/product.types";
 import { expect, test } from "fixtures/business.fixture";
 
 test.describe("[Sales Portal] [Products]", () => {
-  let id = "";
+  let id: IProductFromResponse[] = [];
   let token = "";
 
   const fields = ["name", "price", "manufacturer"] as (keyof IProduct)[];
@@ -16,25 +16,36 @@ test.describe("[Sales Portal] [Products]", () => {
               TAGS.VISUAL_REGRESSION,
               TAGS.SMOKE
             ],
-          }, async ({ productsListPage, productsApiService, productsListUIService }) => {
-      token = await productsListPage.getAuthToken();
-      const product = await productsApiService.create(token);
-      id = product._id;
+          }, async ({   productsApiService, productsListUIService }) => {  
+      const product = await productsApiService.create(token, {name: "Test"});
+      const product2 = await productsApiService.create(token, {name: "Italy"});
+      const product3 = await productsApiService.create(token, {name: "Germany"});
+      const product4= await productsApiService.create(token, {name: "France"});
+      const product5= await productsApiService.create(token, {name: "Spain"});
+      id = [product, product2, product3, product4, product5];
       await productsListUIService.open();
       await productsListUIService.search(String(product[field]));
       await productsListUIService.assertProductInTable(product.name, { visible: true });
+      for (const product of id) {
+        if (product.name !== String(product[field])){
+          await productsListUIService.assertProductInTable(product.name, { visible: false }); 
+        }
+      }
     });
   }
 
   test.afterEach(async ({ productsApiService }) => {
-    if (id) await productsApiService.delete(token, id);
-    id = "";
+     for (const ids of id) {
+      await productsApiService.delete(token, ids._id)
+    };
   });
-  test.skip("Search by name", {
+
+  test.skip("Search by name",{
             tag: [
               TAGS.UI,
             ],
-          }, async ({ 
+          }, async ({
+    loginUIService,
     productsApiService,
     productsListUIService,
     productsListPage,

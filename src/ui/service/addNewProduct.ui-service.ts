@@ -1,20 +1,16 @@
-import { expect, Page } from "@playwright/test";
+import { expect } from "@playwright/test";
 import { apiConfig } from "config/apiConfig";
 import { generateProductData } from "data/salesPortal/products/generateProductData";
 import { STATUS_CODES } from "data/statusCodes";
 import { IProduct, IProductResponse } from "data/types/product.types";
 import _ from "lodash";
 import { AddNewProductPage, ProductsListPage } from "ui/pages/products";
+import { BaseUiService } from "./baseUiService";
 import { logStep } from "utils/report/logStep.utils";
 
-export class AddNewProductUIService {
-  addNewProductPage: AddNewProductPage;
-  productsListPage: ProductsListPage;
-
-  constructor(private page: Page) {
-    this.addNewProductPage = new AddNewProductPage(page);
-    this.productsListPage = new ProductsListPage(page);
-  }
+export class AddNewProductUIService extends BaseUiService {
+  addNewProductPage: AddNewProductPage = new AddNewProductPage(this.page);
+  productsListPage: ProductsListPage = new ProductsListPage(this.page);
 
 @logStep("Opening the Add New Product page")
   async open() {
