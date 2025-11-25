@@ -5,12 +5,18 @@ import { AddNewProductPage } from "ui/pages/products/addNewProduct.page";
 import { EditProductPage } from "ui/pages/products/editProduct.page";
 import { ProductsListPage } from "ui/pages/products/productsList.page";
 import { convertToFullDateAndTime } from "utils/date.utils";
-import { BaseUiService } from "./baseUiService";
+import { logStep } from "utils/report/logStep.utils";
 
-export class ProductsListUIService extends BaseUiService {
- private readonly productsListPage: ProductsListPage = new ProductsListPage(this.page);
-  private readonly addNewProductPage: AddNewProductPage = new AddNewProductPage(this.page);
-  //editProductPage: EditProductPage;
+export class ProductsListUIService {
+  productsListPage: ProductsListPage;
+  addNewProductPage: AddNewProductPage;
+  editProductPage: EditProductPage;
+
+  constructor(private page: Page) {
+    this.productsListPage = new ProductsListPage(page);
+    this.addNewProductPage = new AddNewProductPage(page);
+    this.editProductPage = new EditProductPage(page);
+  }
 
 @logStep("Opening the Add New Product page from the products list")
   async openAddNewProductPage() {

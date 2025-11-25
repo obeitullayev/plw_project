@@ -7,7 +7,7 @@ import { COUNTRY } from "./country";
 
 export function generateCustomerData(params?: Partial<ICustomerDetails>): ICustomerDetails {
   return {
-    name: `${faker.person.firstName()} ${faker.person.lastName()}`,
+    name: faker.person.firstName() + faker.person.lastName(),// + faker.number.int({ min: 1, max: 100000 }),
     email: faker.internet.email(),
     country: getRandomEnumValue(COUNTRY),
     city: faker.location.city(),
@@ -19,3 +19,16 @@ export function generateCustomerData(params?: Partial<ICustomerDetails>): ICusto
     ...params,
   };
 }
+
+// export function generateProductResponseData(params?: Partial<IProduct>): IProductFromResponse {
+//   const initial = generateProductData(params);
+//   return {
+//     _id: new ObjectId().toHexString(),
+//     name: initial.name,
+//     amount: initial.amount,
+//     price: initial.price,
+//     manufacturer: initial.manufacturer,
+//     createdOn: new Date().toISOString(),
+//     notes: initial.notes!,
+//   };
+// }
