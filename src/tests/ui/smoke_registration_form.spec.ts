@@ -1,4 +1,5 @@
 import test, {expect} from "@playwright/test";
+import { TAGS } from "data/tags";
 
 interface ICredentials {
     username: string;
@@ -28,14 +29,24 @@ test.describe("[Smoke tests for Registration Form]", () => {
         await registerLink.click();
     });
 
-    test("Registration form is correct", async ({page}) => {
+    test("Registration form is correct", {
+            tag: [
+              TAGS.UI,
+              TAGS.SMOKE
+            ],
+          }, async ({page}) => {
         const registrationFormTitle = page.locator("#registerForm")
 
         await expect(registrationFormTitle).toBeVisible();
         await expect(registrationFormTitle).toHaveText(PAGE_DATA.REGISTER_TITLE)
     })
 
-    test("Success registration", async ({page}) => {
+    test("Success registration", {
+            tag: [
+              TAGS.UI,
+              TAGS.SMOKE
+            ],
+          }, async ({page}) => {
         const usernameInput = page.locator("#userNameOnRegister");
         const passwordInput = page.locator("#passwordOnRegister");
         const registerButton = page.locator("#register");
@@ -48,7 +59,12 @@ test.describe("[Smoke tests for Registration Form]", () => {
         await expect(notification).toHaveText(NOTIFICATIONS.REGISTER_SUCCESS);
     });
 
-    test("Should not register with already used username", async ({page}) => {
+    test("Should not register with already used username", {
+            tag: [
+              TAGS.UI,
+              TAGS.SMOKE
+            ],
+          }, async ({page}) => {
         const usernameInput = page.locator("#userNameOnRegister");
         const passwordInput = page.locator("#passwordOnRegister");
         const registerButton = page.locator("#register");
@@ -65,7 +81,12 @@ test.describe("[Smoke tests for Registration Form]", () => {
         await expect(notification).toHaveText(NOTIFICATIONS.USED_USERNAME);
     });
 
-    test("Could back to login form after register", async ({page}) => {
+    test("Could back to login form after register", {
+            tag: [
+              TAGS.UI,
+              TAGS.SMOKE
+            ],
+          }, async ({page}) => {
         const usernameInput = page.locator("#userNameOnRegister");
         const passwordInput = page.locator("#passwordOnRegister");
         const registerButton = page.locator("#register");
@@ -84,7 +105,12 @@ test.describe("[Smoke tests for Registration Form]", () => {
         await expect(loginFormTitle).toHaveText(PAGE_DATA.LOGIN_TITLE)
     });
 
-    test("Could login after register", async ({page}) => {
+    test("Could login after register", {
+            tag: [
+              TAGS.UI,
+              TAGS.SMOKE
+            ],
+          }, async ({page}) => {
         const usernameInput = page.locator("#userNameOnRegister");
         const passwordInput = page.locator("#passwordOnRegister");
         const registerButton = page.locator("#register");
@@ -114,5 +140,4 @@ test.describe("[Smoke tests for Registration Form]", () => {
         await expect(successLoginTitle).toHaveText(NOTIFICATIONS.LOGIN_SUCCESS)
 
     });
-
 })
