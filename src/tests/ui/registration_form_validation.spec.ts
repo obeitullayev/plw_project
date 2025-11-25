@@ -2,7 +2,6 @@ import test, {expect} from "@playwright/test";
 import { IInvalidCredential } from 'data/types/types';
 import path from "path";
 import fs from "fs"
-import { TAGS } from "data/tags";
 
 const file = path.resolve(`${process.cwd()}/src/data/invalidCredentials.json`);
 const userData = JSON.parse(fs.readFileSync(file, "utf-8")) as IInvalidCredential[];
@@ -17,11 +16,7 @@ test.describe("[Registration Form]", () => {
     });
 
     for (const {username, password, title, message } of userData) {
-        test(title, {
-                    tag: [
-                      TAGS.UI,
-                    ],
-                  }, async ({page}) => {
+        test(title, async ({page}) => {
             if (title === 'LONG_USERNAME' || title === 'LONG_PASS' || title === 'WITHOUT_UPPER_PASS') {
                 test.skip();
             }

@@ -6,7 +6,3 @@ node_modules/
 /blob-report/
 /playwright/.cache/
 /playwright/.auth/
-.env
-allure-results
-allure-report
-/src/.auth

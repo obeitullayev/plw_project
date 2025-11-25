@@ -1,5 +1,4 @@
 import test, {expect} from "@playwright/test";
-import { TAGS } from "data/tags";
 
 
 interface ICredentials{
@@ -47,11 +46,7 @@ test.describe("[Registration Form]", async ()=> {
         await page.goto(url);
     })
 
-    test("success registration", {
-            tag: [
-              TAGS.UI,
-            ],
-          }, async ({page}) => {
+    test("success registration", async ({page}) => {
         const firstNameInput = page.locator('#firstName');
         const lastNameInput = page.locator('#lastName');
         const addressInput = page.locator('#address')

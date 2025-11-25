@@ -1,5 +1,4 @@
 import test, {expect} from "@playwright/test";
-import { TAGS } from "data/tags";
 
 test.describe("[Local Storage Login]", ()=> {
     const data = {
@@ -15,11 +14,7 @@ test.describe("[Local Storage Login]", ()=> {
             }, data);
     });
 
-    test("Should login with valid credentials", {
-                tag: [
-                  TAGS.UI,
-                ],
-              }, async ({page}) => {
+    test("Should login with valid credentials", async ({page}) => {
         const url = "https://anatoly-karpovich.github.io/demo-login-form/"
         const loginFormTitle = page.locator("#loginForm")
         const usernameLoginInput = page.locator("#userName");

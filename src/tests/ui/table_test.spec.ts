@@ -2,7 +2,6 @@ import test, {expect, Page} from "@playwright/test";
 import { IUserData } from 'data/types/types';
 import path from "path";
 import fs from "fs"
-import { TAGS } from "data/tags";
 
 const file = path.resolve(`${process.cwd()}/src/data/userData.json`);
 const userData = JSON.parse(fs.readFileSync(file, "utf-8")) as IUserData[];
@@ -23,11 +22,7 @@ async function getTableRow(page: Page, email: string){
 test.describe("Table", () =>{
 
     for (const user of userData) {
-        test( `Data Check for #${user.Email}`, {
-                    tag: [
-                      TAGS.UI,
-                    ],
-                  }, async ({page}) => {
+        test( `Data Check for #${user.Email}`, async ({page}) => {
             const url = "https://the-internet.herokuapp.com/tables"
             const result = await getTableRow(page, user.Email);
 
