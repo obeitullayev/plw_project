@@ -1,9 +1,17 @@
 import { test, expect } from "fixtures/business.fixture";
 import { generateMetricData } from "data/salesPortal/generateMetricData";
 import numeral from "numeral";
+import { TAGS } from "data/tags";
 
 test.describe("[Integration] [Sales Portal] [Home]", () => {
-  test("Check metrics: Orders This Years, Canceled Orders, New Customers, Total Revenue, Average Order Value", async ({ loginAsAdmin, homePage, mock }) => {
+  test("Check metrics: Orders This Years, Canceled Orders, New Customers, Total Revenue, Average Order Value", {
+            tag: [
+              TAGS.CUSTOMERS,
+              TAGS.PRODUCTS,
+              TAGS.API,
+              TAGS.INTEGRATION
+            ],
+          }, async ({  productsListUIService, homeUIService, homePage, mock }) => {
     const expectedMetricsResponse  = generateMetricData()
 
     mock.metricsHomePage({
@@ -11,9 +19,9 @@ test.describe("[Integration] [Sales Portal] [Home]", () => {
       IsSuccess: true,
       ErrorMessage: null,
     });
-
-    await loginAsAdmin();
-    await homePage.waitForOpened();
+ 
+    await productsListUIService.open()
+    await homeUIService.openModule("Home")
     expect(await homePage.totalOrders.innerText()).toEqual((expectedMetricsResponse.orders.totalOrders).toString());
     expect(await homePage.canceledOrders.innerText()).toEqual((expectedMetricsResponse.orders.totalCanceledOrders).toString());
     expect(await homePage.newCustomers.innerText()).toEqual((expectedMetricsResponse.customers.totalNewCustomers).toString());

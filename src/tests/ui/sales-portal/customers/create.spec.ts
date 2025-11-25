@@ -1,17 +1,24 @@
 import { test, expect } from "fixtures/business.fixture";
 import { NOTIFICATIONS } from "data/salesPortal/notifications";
+import { TAGS } from "data/tags";
 
 test.describe("[Sales Portal] [Customers]", async () => {
   let id = "";
   let token = "";
 
-  test("Add customer with services", async ({
-    loginUIService,
+  test("Add customer with services", {
+            tag: [
+              TAGS.REGRESSION,
+              TAGS.CUSTOMERS,
+              TAGS.UI,
+              TAGS.VISUAL_REGRESSION
+            ],
+          }, async ({ 
     customersListPage,
     customersListUIService,
     addNewCustomerUIService,
   }) => {
-    token = await loginUIService.loginAsAdmin();
+    token = await customersListPage.getAuthToken();
     await customersListUIService.open()
     await customersListUIService.openAddNewCustomerPage();
     const createdCustomer = await addNewCustomerUIService.create();

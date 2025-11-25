@@ -2,6 +2,7 @@ import { test, expect } from "fixtures/business.fixture";
 import { credentials } from "config/env";
 import { NOTIFICATIONS } from "data/salesPortal/notifications";
 import { generateProductData } from "data/salesPortal/products/generateProductData";
+import { TAGS } from "data/tags"; 
 // import { MANUFACTURERS } from "data/salesPortal/products/manufacturers";
 // import { IProduct } from "data/types/product.types";
 // import { HomePage } from "ui/pages/home.page";
@@ -9,18 +10,15 @@ import { generateProductData } from "data/salesPortal/products/generateProductDa
 // import { AddNewProductPage } from "ui/pages/products/addNewProduct.page";
 // import { ProductsListPage } from "ui/pages/products/productsList.page";
 
-// const productData: IProduct = {
-//   name: "Product" + Date.now(),
-//   manufacturer: MANUFACTURERS.GOOGLE,
-//   price: 1,
-//   amount: 2,
-//   notes: "test notes",
-// };
-
 test.describe("[Sales Portal] [Products]", async () => {
   let id = "";
   let token = "";
-  test.skip("Add new product OLD", async ({ homePage, productsListPage, addNewProductPage, loginPage }) => { 
+  test.skip("Add new product OLD", {
+            tag: [
+              TAGS.UI,
+              TAGS.SMOKE
+            ],
+          },async ({ homePage, productsListPage, addNewProductPage,   }) => { 
 
     // const spinner = page.locator(".spinner-border");
     // const toastMessage = page.locator(".toast-body");
@@ -47,10 +45,6 @@ test.describe("[Sales Portal] [Products]", async () => {
 
     // await page.goto(salesPortalUrl); //fix
     await homePage.open();
-    await loginPage.waitForOpened();
-    await loginPage.fillCredentials(credentials)
-    await loginPage.clickLogin()
-
     await homePage.waitForOpened();
     // await expect(welcomeText).toBeVisible();
     // await expect(spinner).toHaveCount(0);
@@ -84,16 +78,17 @@ test.describe("[Sales Portal] [Products]", async () => {
     await expect(productsListPage.firstTableRow).toBeVisible();
   });
 
-  test("Add new product with services", async ({
-    loginUIService,
-    // homeUIService,
-    // productsListUIService,
+  test("Add new product with services", {
+      tag: [
+        TAGS.SMOKE, 
+        TAGS.REGRESSION, 
+        TAGS.PRODUCTS
+      ],
+    }, async ({
     addNewProductUIService,
     productsListPage,
   }) => {
-    token = await loginUIService.loginAsAdmin();
-    // await homeUIService.openModule("Products");
-    // await productsListUIService.openAddNewProductPage();
+    token = await productsListPage.getAuthToken();
     await addNewProductUIService.open();
     const createdProduct = await addNewProductUIService.create();
     id = createdProduct._id;
@@ -107,15 +102,15 @@ test.describe("[Sales Portal] [Products]", async () => {
   });
 
 
-  test("Add new product", async ({ homePage, productsListPage, addNewProductPage, loginPage }) => {
-    await homePage.open();
-    await loginPage.waitForOpened();
-    await loginPage.fillCredentials(credentials)
-    await loginPage.clickLogin()
+  test("Add new product", {
+      tag: [
+        TAGS.SMOKE, 
+        TAGS.REGRESSION, 
+        TAGS.PRODUCTS
+      ],
+    }, async ({ productsListPage, addNewProductPage, productsListUIService }) => {
 
-    await homePage.waitForOpened();
-    await homePage.clickOnViewModule("Products");
-    await productsListPage.waitForOpened();
+    await productsListUIService.open(); 
     await productsListPage.clickAddNewProduct();
     await addNewProductPage.waitForOpened();
     const productData = generateProductData();
@@ -125,10 +120,7 @@ test.describe("[Sales Portal] [Products]", async () => {
     await expect(productsListPage.toastMessage).toContainText(NOTIFICATIONS.PRODUCT_CREATED);
     await expect(productsListPage.firstTableRow).toBeVisible();
     expect(productsListPage.tableRowByName(productData.name)).toBeVisible()
+    await productsListUIService.deleteProduct(productData.name);
+    expect(productsListPage.tableRowByName(productData.name)).not.toBeVisible()
   });
 });
-
-//locators !
-//waiterForPage !
-//product data generator
-//teardown

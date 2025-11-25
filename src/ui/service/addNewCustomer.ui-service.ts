@@ -17,11 +17,13 @@ export class AddNewCustomerUIService extends BaseUiService {
   //   this.customersListPage = new CustomersListPage(page);
   // }
 
+@logStep("Opening the Add New Customer page")
   async open() {
     await this.addNewCustomerPage.open("customers/add");
     await this.addNewCustomerPage.waitForOpened();
   }
 
+@logStep("Creating a new customer with provided data")
   async create(customerData?: Partial<ICustomerDetails>) {
     const data = generateCustomerData(customerData);
     await this.addNewCustomerPage.fillForm(data);

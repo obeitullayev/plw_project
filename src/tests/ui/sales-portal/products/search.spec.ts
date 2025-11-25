@@ -45,33 +45,39 @@ test.describe("[Sales Portal] [Products]", () => {
     search by product name
     verify product in table
     */
-    token = await loginUIService.loginAsAdmin();
+    token = await productsListPage.getAuthToken();
     const product = await productsApiService.create(token);
     await productsListUIService.open();
     await productsListUIService.search(product.name);
     await expect(productsListPage.tableRowByName(product.name)).toBeVisible();
   });
 
-  test.skip("Search by price", async ({
-    loginUIService,
+  test.skip("Search by price", {
+            tag: [
+              TAGS.UI,
+            ],
+          }, async ({ 
     productsApiService,
     productsListUIService,
     productsListPage,
   }) => {
-    token = await loginUIService.loginAsAdmin();
+    token = await productsListPage.getAuthToken();
     const product = await productsApiService.create(token);
     await productsListUIService.open();
     await productsListUIService.search(product.price.toString());
     await expect(productsListPage.tableRowByName(product.name)).toBeVisible();
   });
 
-  test.skip("Search by manufacturer", async ({
-    loginUIService,
+  test.skip("Search by manufacturer", {
+            tag: [
+              TAGS.UI,
+            ],
+          }, async ({ 
     productsApiService,
     productsListUIService,
     productsListPage,
   }) => {
-    token = await loginUIService.loginAsAdmin();
+    token = await productsListPage.getAuthToken();
     const product = await productsApiService.create(token);
     await productsListUIService.open();
     await productsListUIService.search(product.manufacturer);

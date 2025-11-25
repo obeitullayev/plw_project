@@ -1,26 +1,25 @@
-import test, { expect } from "@playwright/test";
+import {  test, expect } from "fixtures/api.fixture";
 import { credentials } from "config/env";
 import { STATUS_CODES } from "data/statusCodes";
-import { apiConfig } from "config/apiConfig";
 import { validateResponse } from "utils/validation/validateResponse.utils";
 import { loginSchema } from "data/schemas/login.schema";
-const {baseURL, endpoints} = apiConfig;
+import { TAGS } from "data/tags";
 
 test.describe("[API] [Sales Portal] [Login]", () => {
 
-    test("Login with credentils", async ({request}) => {
-        const loginResponse = await request.post(baseURL + endpoints.login, {
-            data: credentials,
-            headers: {
-                "content-type": "application/json",
-            },
-        });
-        const loginBody = await loginResponse.json();
-        expect.soft(loginResponse.status()).toBe(STATUS_CODES.OK);
-        expect.soft(loginBody.IsSuccess).toBe(true);
-        expect.soft(loginBody.ErrorMessage).toBe(null);
-        expect.soft(loginBody.User.username).toBe(credentials.username);
-        const headers = loginResponse.headers();
+    test("Login with credentials", {
+            tag: [
+              TAGS.REGRESSION,
+              TAGS.PRODUCTS,
+              TAGS.API,
+            ],
+          }, async ({loginApi}) => {
+        const loginResponse = await loginApi.login(credentials);
+        expect.soft(loginResponse.status).toBe(STATUS_CODES.OK);
+        expect.soft(loginResponse.body.IsSuccess).toBe(true);
+        expect.soft(loginResponse.body.ErrorMessage).toBe(null);
+        expect.soft(loginResponse.body.User.username).toBe(credentials.username);
+        const headers = loginResponse.headers;
         const token= headers["authorization"];
         expect(token).toBeTruthy();
         validateResponse(loginResponse, {

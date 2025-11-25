@@ -13,6 +13,7 @@ export class LoginUIService extends BaseUiService {
     return await this.login(credentials);
   }
 
+@logStep("Login with credentials")
   async login(credentials: ICredentials) {
     await this.loginPage.open();
     await this.loginPage.fillCredentials(credentials);

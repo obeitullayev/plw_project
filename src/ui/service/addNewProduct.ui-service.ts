@@ -16,6 +16,7 @@ export class AddNewProductUIService extends BaseUiService {
     await this.addNewProductPage.waitForOpened();
   }
 
+@logStep("Creating a new product with provided data")
   async create(productData?: Partial<IProduct>) {
     const data = generateProductData(productData);
     await this.addNewProductPage.fillForm(data);

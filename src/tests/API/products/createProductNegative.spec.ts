@@ -6,6 +6,7 @@ import { validateResponse } from "utils/validation/validateResponse.utils";
 import { negativeTestData } from "data/salesPortal/products/negativeTestDataAPI";
 import { IProductTestCase } from "data/salesPortal/products/positiveTestDataAPI";
 import { IProduct } from "data/types/product.types";
+import { TAGS } from "data/tags";
 
 test.describe("[API] [Sales Portal] [Products NOT Create]", () => {
   let id = "";
@@ -16,7 +17,13 @@ test.describe("[API] [Sales Portal] [Products NOT Create]", () => {
   });
 
   for (const testData of negativeTestData as IProductTestCase[]) {
-    test(`${testData.title}`, async ({ loginApiService, productsApi }) => {
+    test(`${testData.title}`, {
+        tag: [
+          TAGS.REGRESSION,
+          TAGS.PRODUCTS,
+          TAGS.API, 
+        ],
+      }, async ({ loginApiService, productsApi }) => {
       token = await loginApiService.loginAsAdmin();
       const productData = generateProductData();
       const createdProduct = await productsApi.create({...productData,

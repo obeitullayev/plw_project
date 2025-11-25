@@ -2,19 +2,27 @@ import { test, expect } from "fixtures/business.fixture";
 import { generateProductData } from "data/salesPortal/products/generateProductData";
 import { omit } from "lodash";
 import { ProductsApi } from "api/api/products.api";
+import { TAGS } from "data/tags";
 
 test.describe("[Sales Portal] [Products]", async () => {
   let id = "";
   let token = "";
 
-  test("Edit product with services", async ({
-    loginUIService,
+  test("Edit product with services", {
+            tag: [
+              TAGS.REGRESSION,
+              TAGS.PRODUCTS,
+              TAGS.UI,
+              TAGS.VISUAL_REGRESSION,
+              TAGS.SMOKE
+            ],
+          }, async ({
     productsListUIService,
     productsApiService,
     productsListPage,
     editProductPage
   }) => {
-    token = await loginUIService.loginAsAdmin();
+    token = await productsListPage.getAuthToken();
     const createdProduct = await productsApiService.create(token);
     id = createdProduct._id
     const newProduct = generateProductData()
