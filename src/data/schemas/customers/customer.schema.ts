@@ -1,6 +1,6 @@
 import { COUNTRY } from "data/salesPortal/customers/country";
 
-export const CustomerSchema = {
+export const customerSchema = {
   type: "object",
   properties: {
     _id: { type: "string" },

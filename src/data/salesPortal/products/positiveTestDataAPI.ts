@@ -1,10 +1,6 @@
-import { IProduct } from "data/types/product.types";
+import { IProductTestCase } from "data/types/product.types";
 import { MANUFACTURERS } from "./manufacturers";
 
-export interface IProductTestCase {
-  title: string;
-  data: IProduct;
-}
 
 export const positiveTestTitles = {
   MIN_VALUES: "Создание продукта с минимальными допустимыми значениями",

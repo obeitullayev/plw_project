@@ -1,9 +1,10 @@
+import { productsData } from "data/salesPortal/products/dataForSearch";
 import { TAGS } from "data/tags";
-import { IProduct } from "data/types/product.types";
+import { IProduct, IProductFromResponse } from "data/types/product.types";
 import { expect, test } from "fixtures/business.fixture";
 
-test.describe("[Sales Portal] [Products]", () => {
-  let id = "";
+test.describe.serial("[Sales Portal] [Products] [Search]", () => {
+  let id: string[] = [];
   let token = "";
 
   const fields = ["name", "price", "manufacturer"] as (keyof IProduct)[];
@@ -17,24 +18,33 @@ test.describe("[Sales Portal] [Products]", () => {
               TAGS.SMOKE
             ],
           }, async ({ productsListPage, productsApiService, productsListUIService }) => {
-      token = await productsListPage.getAuthToken();
-      const product = await productsApiService.create(token);
-      id = product._id;
+      token = await productsListPage.getAuthToken(); 
+      const products = await Promise.all(
+        productsData.map(p => productsApiService.create(token, p))
+      );
+      id = products.map(p => p._id);
       await productsListUIService.open();
-      await productsListUIService.search(String(product[field]));
-      await productsListUIService.assertProductInTable(product.name, { visible: true });
+      await productsListUIService.search(String(products[0]![field]));
+      await productsListUIService.assertProductInTable(products[0]!.name, { visible: true });
+      for (const p of products.slice(1)) {
+        await productsListUIService.assertProductInTable(p.name, { visible: false });
+      }
     });
   }
 
   test.afterEach(async ({ productsApiService }) => {
-    if (id) await productsApiService.delete(token, id);
-    id = "";
+     for (const ids of id) {
+      await productsApiService.delete(token, ids)
+    };
+  id = [];
   });
-  test.skip("Search by name", {
+
+  test.skip("Search by name",{
             tag: [
               TAGS.UI,
             ],
-          }, async ({ 
+          }, async ({
+    loginUIService,
     productsApiService,
     productsListUIService,
     productsListPage,

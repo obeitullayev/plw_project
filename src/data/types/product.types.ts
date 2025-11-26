@@ -1,6 +1,11 @@
 import { MANUFACTURERS } from "data/salesPortal/products/manufacturers";
 import { ID, IResponseFields, SortOrder } from "./core.types";
 
+export interface IProductTestCase {
+  title: string;
+  data: IProduct;
+}
+
 export interface IProduct {
   name: string;
   manufacturer: MANUFACTURERS;

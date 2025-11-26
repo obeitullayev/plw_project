@@ -3,18 +3,13 @@ import { credentials } from "config/env";
 import { ICredentials } from "data/types/credentials.types";
 import { HomePage } from "ui/pages/home.page";
 import { LoginPage } from "ui/pages/login.page";
+import { BaseUiService } from "./baseUiService";
 import { logStep } from "utils/report/logStep.utils";
 
-export class LoginUIService {
-  homePage: HomePage;
-  loginPage: LoginPage;
+export class LoginUIService extends BaseUiService {
+  private readonly homePage: HomePage = new HomePage(this.page);
+  private readonly loginPage: LoginPage = new LoginPage(this.page);
 
-  constructor(private page: Page) {
-    this.homePage = new HomePage(page);
-    this.loginPage = new LoginPage(page);
-  }
-
-@logStep("Login as Admin")
   async loginAsAdmin() {
     return await this.login(credentials);
   }

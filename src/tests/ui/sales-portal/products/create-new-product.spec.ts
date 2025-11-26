@@ -1,4 +1,4 @@
-import { test, expect } from "fixtures/page.fixture"; 
+import { test, expect } from "fixtures/business.fixture"; 
 import { generateProductData } from "data/salesPortal/products/generateProductData";
 import { NOTIFICATIONS } from "data/salesPortal/notifications";
 import _ from "lodash";
@@ -35,7 +35,7 @@ test.describe("Sales Portal [Create Product]", ()=> {
          expect(productData).toEqual(productDataFilled)
 
         await productsListPage.detailsModal.clickClose()
-        await productsListPage.detailsModal.modalClosed()
+        await productsListPage.detailsModal.waitForClosed()
         await productsListPage.deleteButton(productData.name).click()
         await productsListPage.deleteModal.waitForOpened()
         await productsListPage.deleteModal.clickConfirm()
