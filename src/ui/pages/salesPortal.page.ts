@@ -23,7 +23,7 @@ export abstract class SalesPortalPage extends BasePage {
 
 @logStep("Opening page")
   async open(route?: string) {
-    await this.page.goto(SALES_PORTAL_URL + route);
+    await this.page.goto(SALES_PORTAL_URL! + route);
   }
 
 @logStep("Closing the notification")

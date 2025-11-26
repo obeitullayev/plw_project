@@ -1,5 +1,6 @@
+import { generateProductData } from "./generateProductData";
 import { MANUFACTURERS } from "./manufacturers";
-import { IProductTestCase } from "./positiveTestDataAPI";
+import { IProductTestCase } from "data/types/product.types";
 
 export const negativeTestTitles = {
   NAME_EMPTY: "Попытка создать продукт с пустым именем",
@@ -18,13 +19,7 @@ export const negativeTestTitles = {
 export const negativeTestData: IProductTestCase[] = [
   {
     title: negativeTestTitles.NAME_EMPTY,
-    data: {
-      name: "",
-      manufacturer: MANUFACTURERS.SONY,
-      price: 100,
-      amount: 10,
-      notes: "Valid notes",
-    },
+    data: generateProductData({ name: "" }),
   },
   {
     title: negativeTestTitles.NAME_TOO_SHORT,
