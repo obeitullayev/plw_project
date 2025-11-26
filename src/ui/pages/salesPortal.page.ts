@@ -17,7 +17,7 @@ export abstract class SalesPortalPage extends BasePage {
   }
 
 @logStep("Waiting for modal to be closed")
-  async modalClosed(){
+  async waitForClosed(){
     await expect(this.uniqueElement).not.toBeVisible()
   }
 

@@ -23,102 +23,42 @@ export const negativeTestData: IProductTestCase[] = [
   },
   {
     title: negativeTestTitles.NAME_TOO_SHORT,
-    data: {
-      name: "AB",
-      manufacturer: MANUFACTURERS.AMAZON,
-      price: 100,
-      amount: 10,
-      notes: "Valid notes",
-    },
+    data: generateProductData({ name: "AB" }),
   },
   {
     title: negativeTestTitles.NAME_TOO_LONG,
-    data: {
-      name: "A".repeat(41),
-      manufacturer: MANUFACTURERS.MICROSOFT,
-      price: 100,
-      amount: 10,
-      notes: "Valid notes",
-    },
+    data: generateProductData({ name: "A".repeat(41) }),
   },
   {
     title: negativeTestTitles.NAME_INVALID_CHARS,
-    data: {
-      name: "Phone@123",
-      manufacturer: MANUFACTURERS.GOOGLE,
-      price: 100,
-      amount: 10,
-      notes: "Valid notes",
-    },
+    data: generateProductData({ name: "Phone@123" }),
   },
   {
     title: negativeTestTitles.MANUFACTURER_EMPTY,
-    data: {
-      name: "Valid Name",
-      manufacturer: "" as unknown as MANUFACTURERS,
-      price: 100,
-      amount: 10,
-      notes: "Valid notes",
-    },
+    data: generateProductData({  manufacturer: "" as unknown as MANUFACTURERS }),
   },
   {
     title: negativeTestTitles.PRICE_ZERO,
-    data: {
-      name: "Valid Name",
-      manufacturer: MANUFACTURERS.APPLE,
-      price: 0,
-      amount: 10,
-      notes: "Valid notes",
-    },
+    data: generateProductData({ price: 0 })
   },
-  {
-    title: negativeTestTitles.PRICE_TOO_HIGH,
-    data: {
-      name: "Valid Name",
-      manufacturer: MANUFACTURERS.SAMSUNG,
-      price: 100000,
-      amount: 10,
-      notes: "Valid notes",
-    },
+ {
+  title: negativeTestTitles.PRICE_TOO_HIGH,
+  data: generateProductData({ price: 100000 }),
   },
   {
     title: negativeTestTitles.AMOUNT_NEGATIVE,
-    data: {
-      name: "Valid Name",
-      manufacturer: MANUFACTURERS.TESLA,
-      price: 100,
-      amount: -1,
-      notes: "Valid notes",
-    },
+    data: generateProductData({ amount: -1 }),
   },
   {
     title: negativeTestTitles.AMOUNT_TOO_HIGH,
-    data: {
-      name: "Valid Name",
-      manufacturer: MANUFACTURERS.XIAOMI,
-      price: 100,
-      amount: 1000,
-      notes: "Valid notes",
-    },
+    data: generateProductData({ amount: 1000 }),
   },
   {
     title: negativeTestTitles.NOTES_TOO_LONG,
-    data: {
-      name: "Valid Name",
-      manufacturer: MANUFACTURERS.SONY,
-      price: 100,
-      amount: 10,
-      notes: "A".repeat(251),
-    },
+    data: generateProductData({ notes: "A".repeat(251) }),
   },
   {
     title: negativeTestTitles.NOTES_INVALID_CHARS,
-    data: {
-      name: "Valid Name",
-      manufacturer: MANUFACTURERS.AMAZON,
-      price: 100,
-      amount: 10,
-      notes: "Invalid <notes>",
-    },
+    data: generateProductData({ notes: "Invalid <notes>" }),
   },
 ];

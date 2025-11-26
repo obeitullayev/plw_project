@@ -35,7 +35,7 @@ test.describe("Sales Portal [Create Product]", ()=> {
          expect(productData).toEqual(productDataFilled)
 
         await productsListPage.detailsModal.clickClose()
-        await productsListPage.detailsModal.modalClosed()
+        await productsListPage.detailsModal.waitForClosed()
         await productsListPage.deleteButton(productData.name).click()
         await productsListPage.deleteModal.waitForOpened()
         await productsListPage.deleteModal.clickConfirm()

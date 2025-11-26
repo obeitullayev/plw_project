@@ -1,8 +1,9 @@
+import { productsData } from "data/salesPortal/products/dataForSearch";
 import { TAGS } from "data/tags";
 import { IProduct, IProductFromResponse } from "data/types/product.types";
 import { expect, test } from "fixtures/business.fixture";
 
-test.describe("[Sales Portal] [Products]", () => {
+test.describe.serial("[Sales Portal] [Products] [Search]", () => {
   let id: string[] = [];
   let token = "";
 
@@ -17,10 +18,9 @@ test.describe("[Sales Portal] [Products]", () => {
               TAGS.SMOKE
             ],
           }, async ({ productsListPage, productsApiService, productsListUIService }) => {
-      token = await productsListPage.getAuthToken();
-      const productNames = ["Test", "Italy", "Germany", "France", "Spain"];
+      token = await productsListPage.getAuthToken(); 
       const products = await Promise.all(
-        productNames.map(name => productsApiService.create(token, { name }))
+        productsData.map(p => productsApiService.create(token, p))
       );
       id = products.map(p => p._id);
       await productsListUIService.open();
@@ -36,6 +36,7 @@ test.describe("[Sales Portal] [Products]", () => {
      for (const ids of id) {
       await productsApiService.delete(token, ids)
     };
+  id = [];
   });
 
   test.skip("Search by name",{
